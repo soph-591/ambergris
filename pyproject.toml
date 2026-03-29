@@ -30,6 +30,10 @@ dev = [
     "types-docker"
 ]
 
+[project.urls]
+Homepage = "https://github.com/soph-591/ambergris"
+Issues = "https://github.com/soph-591/ambergris/issues"
+
 [tool.hatch.version]
 path = "src/ambergris/__about__.py"
 
