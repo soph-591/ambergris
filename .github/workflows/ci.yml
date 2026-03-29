@@ -28,7 +28,7 @@ jobs:
       run: pip install .[dev]
 
     - name: Check Formatting
-      run: hatch run black --check src/ test/
+      run: hatch run black --check src/ tests/
 
     - name: Static Type Check
       run: hatch run mypy src/
