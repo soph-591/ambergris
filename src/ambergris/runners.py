@@ -1,7 +1,7 @@
 import logging
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterator, Iterable, Optional, Tuple
+from typing import Any, Iterator, Iterable, Optional, Tuple, cast
 
 from docker.models.containers import Container
 from docker.types import Mount
@@ -102,7 +102,8 @@ def exec_command(container: Container, command: str | list[str]) -> list[str]:
         list[str]: Decoded stdout and stderr lines from the execution.
     """
     _, stream = container.exec_run(cmd=command, stream=True, demux=True)
-    result = _process_stream(stream)
+    typed_stream = cast(Iterable[Tuple[Optional[bytes], Optional[bytes]]], stream)
+    result = _process_stream(typed_stream)
     return result
 
 
