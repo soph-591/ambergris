@@ -12,7 +12,7 @@ def make_io_relative_to_container(func: F) -> F:
     The typical use-case for this decorator is when you write a function that
     compiles a command to run in a container, and you need to translate the host filepaths
     into filepaths relative to the container.
-    
+
     For example:
 
     ```
@@ -22,7 +22,7 @@ def make_io_relative_to_container(func: F) -> F:
     @ambergris.make_io_relative_to_container
     def my_bash_command(in_data: Path, out_file: Path, mounts: list[Mount]):
         return f"/bin/bash -c 'python3 my_tool.py --in {in_data} --out {out_file}.csv'"
-    
+
     if __name__ == "__main__":
         mounts = ambergris.make_bindmounts(
             ("/home/you/inputs/", "/container/in/"),
@@ -49,6 +49,7 @@ def make_io_relative_to_container(func: F) -> F:
     Returns:
         Callable: The wrapped function with path translation logic.
     """
+
     @wraps(func)
     def wrapper(*args: Any, mounts: list[Mount], **kwargs: Any) -> Any:
         new_args = [
