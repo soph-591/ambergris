@@ -14,7 +14,7 @@ def test_init_container_configures_correctly(mocker: pytest_mock.MockerFixture):
     mock_resolveimage = mocker.patch("ambergris.runners._resolve_image")
     mock_resolveimage.return_value = mock_image
 
-    ambergris.runners._init_container("target-image", command=["/bin/bash", "-c", "ls"])
+    ambergris.runners._init_container("target-image", command=["/bin/bash", "-c", "ls"], mounts=[])
 
     mock_dockerclient.containers.create.assert_called_once()
     _, kwargs = mock_dockerclient.containers.create.call_args
