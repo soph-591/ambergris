@@ -39,7 +39,7 @@ def open_container(
         docker.models.containers.Container: The initialized, running container.
     """
     container, _ = _init_container(
-        image, command=["tail", "-f", "/dev/null"], mounts=mounts, **kwargs
+        image, command=["tail", "-f", "/dev/null"], mounts=[*mounts], **kwargs
     )
     container.start()
     try:
@@ -50,8 +50,8 @@ def open_container(
 
 def _init_container(
     image: str | Path,
+    mounts: list[Mount],
     command: Optional[str | list[str]] = None,
-    *mounts: Mount,
     **kwargs: Any,
 ) -> Tuple[Container, Iterable]:
     cli = _cli()
@@ -62,7 +62,7 @@ def _init_container(
             "detach": True,
             "auto_remove": False,
             "command": command,
-            "mounts": mounts,
+            "mounts": [*mounts],
         }
     )
     container = cli.containers.create(**kwargs)
@@ -145,7 +145,9 @@ def run_container(
             - A list of strings representing the decoded stdout/stderr lines.
             - An integer representing the container's exit status code.
     """
-    container, stream = _init_container(image, command, *mounts, **kwargs)
+    container, stream = _init_container(
+        image=image, command=command, mounts=[*mounts], **kwargs
+    )
     container.start()
     try:
         output = _process_stream(stream)
